@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: database-projeto.clguk20sen5s.us-east-1.rds.amazonaws.com:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: senha_segura
+      WORDPRESS_DB_NAME: mysqlproject
+    volumes:
+      - wp_data:/var/www/html
+
+
+
+volumes:
+  db_data:
+  wp_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=fs-0018990c9972e8485.efs.us-east-1.amazonaws.com,rw"
+      device: ":/"
