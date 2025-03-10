@@ -106,7 +106,7 @@ sudo systemctl enable docker
 sudo apt install -y docker-compose
 ```
 
-## **9 Criar o Arquivo docker-compose.yml**
+## **9 Arquivo docker-compose.yml**
 
 ```yaml
 version: '3.1'
