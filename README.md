@@ -159,7 +159,7 @@ docker ps
 
 
 Acesse o WordPress pelo navegador em:
-http://52.91.59.95/:80
+http://http:/54.87.202.79/:80
 
 
 ## **11 Configurar o Git e Enviar o Projeto para o GitHub**
