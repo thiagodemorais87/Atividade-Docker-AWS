@@ -1,4 +1,4 @@
-# **Documentação Completa do Projeto - WordPress com AWS e Docker**
+# **Documentação do Projeto - WordPress com AWS e Docker**
 
 ## **1️ Introdução**
 Este documento detalha todo o processo de configuração do ambiente AWS para hospedar uma aplicação WordPress utilizando **Docker**, **Amazon EC2**, **Amazon RDS**, **Amazon EFS**, **Security Groups**, **Load Balancer (ELB)** e **Auto Scaling**.
