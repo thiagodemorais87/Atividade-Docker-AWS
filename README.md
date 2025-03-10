@@ -1,9 +1,9 @@
 # **Documentação Completa do Projeto - WordPress com AWS e Docker**
 
-## **1️⃣ Introdução**
+## **1️ Introdução**
 Este documento detalha todo o processo de configuração do ambiente AWS para hospedar uma aplicação WordPress utilizando **Docker**, **Amazon EC2**, **Amazon RDS**, **Amazon EFS**, **Security Groups**, **Load Balancer (ELB)** e **Auto Scaling**.
 
-## **2️⃣ Tecnologias Utilizadas**
+## **2️ Tecnologias Utilizadas**
 - **Amazon Web Services (AWS)**
 - **Amazon EC2** (Elastic Compute Cloud)
 - **Amazon RDS** (Relational Database Service)
@@ -18,7 +18,7 @@ Este documento detalha todo o processo de configuração do ambiente AWS para ho
 - **Linux (Git-Bash)**
 - **NFS (Network File System)**
 
-## **3️⃣ Configuração do AWS Console**
+## **3️ Configuração do AWS Console**
 
 ### **3.1 Criar Instância EC2**
 1. Acesse o **AWS Console** e navegue até o **EC2**.
@@ -42,7 +42,7 @@ Crie um **Security Group** e configure as regras de acesso:
 | HTTPS      | TCP      | 443   | 0.0.0.0/0        | Acesso Web SSL |
 | MySQL/Aurora | TCP    | 3306  | IP do EC2        | Conexão MySQL   |
 
-## **4️⃣ Configurar o Banco de Dados (RDS MySQL)**
+## **4️ Configurar o Banco de Dados (RDS MySQL)**
 
 ### **4.1 Criar Banco de Dados RDS**
 1. No **AWS Console**, navegue até **Amazon RDS**.
@@ -64,7 +64,7 @@ Crie um **Security Group** e configure as regras de acesso:
    mysql -h database-projeto.clguk20sen5s.us-east-1.rds.amazonaws.com -u admin -p
    ```
 
-## **5️⃣ Configurar Amazon EFS para Arquivos Estáticos**
+## **5️ Configurar Amazon EFS para Arquivos Estáticos**
 
 1. No **AWS Console**, acesse **EFS** e clique em **Create File System**.
 2. Escolha a mesma **VPC do EC2**.
@@ -74,7 +74,7 @@ Crie um **Security Group** e configure as regras de acesso:
    sudo mount -t nfs4 -o nfsvers=4.1 fs-0018990c9972e8485.efs.us-east-1.amazonaws.com:/ /mnt/efs
    ```
 
-## **6️⃣ Configurar Load Balancer (ELB)**
+## **6️ Configurar Load Balancer (ELB)**
 1. Vá para o **AWS Console** → **EC2** → **Load Balancers**.
 2. Clique em **Create Load Balancer**.
 3. Escolha **Application Load Balancer**.
@@ -82,7 +82,7 @@ Crie um **Security Group** e configure as regras de acesso:
 5. Crie um **Target Group** e registre as instâncias rodando o WordPress.
 6. Finalize a configuração e obtenha o **DNS do Load Balancer**.
 
-## **7️⃣ Configurar Auto Scaling Group**
+## **7️ Configurar Auto Scaling Group**
 1. Vá para **EC2** → **Auto Scaling Groups** → **Create Auto Scaling Group**.
 2. Escolha um **Launch Template** (se necessário, crie um novo).
 3. Defina a **Quantidade Mínima e Máxima de Instâncias**:
@@ -92,7 +92,7 @@ Crie um **Security Group** e configure as regras de acesso:
 4. Conecte o **Auto Scaling Group** ao **Load Balancer** criado anteriormente.
 5. Finalize a configuração.
 
-## **8️⃣ Configuração do Docker e Docker Compose**
+## **8️ Configuração do Docker e Docker Compose**
 
 ### **8.1 Instalar Docker no EC2**
 ```bash
@@ -106,7 +106,7 @@ sudo systemctl enable docker
 sudo apt install -y docker-compose
 ```
 
-## **9️⃣ Criar o Arquivo docker-compose.yml**
+## **9 Criar o Arquivo docker-compose.yml**
 
 ```yaml
 version: '3.1'
@@ -145,6 +145,53 @@ volumes:
       o: "addr=fs-0018990c9972e8485.efs.us-east-1.amazonaws.com,rw"
       device: ":/"
 ```
+ficou faltando adicionar isso!!
 
-Agora seu site WordPress está rodando na AWS com **Auto Scaling** e **Load Balancer** configurados! 🚀
+## **10 Executar os Containers**
+
+bash
+docker-compose up -d
+
+
+Verifique se os containers estão rodando:
+bash
+docker ps
+
+
+Acesse o WordPress pelo navegador em:
+http://52.91.59.95/:80
+
+
+## **11 Configurar o Git e Enviar o Projeto para o GitHub**
+
+### **11.1 Configurar SSH para GitHub**
+bash
+ssh-keygen -t ed25519 -C "xafullt@example.com"
+ssh-add ~/.ssh/id_ed25519
+cat ~/.ssh/id_ed25519.pub
+
+Adicione essa chave ao GitHub.
+
+### **11.2 Enviar arquivos para o GitHub**
+bash
+git init
+git remote add origin git@github.com:thiagodemorais87/Atividade-Docker-AWS.git
+git add .
+git commit -m "Projeto WordPress com Docker e AWS"
+git push -u origin main
+
+
+## **12 Conclusão**
+Este documento cobre toda a configuração do ambiente AWS para rodar o WordPress utilizando Docker. Se precisar de ajustes, consulte os logs dos containers:
+
+bash
+docker logs -f wordpress
+
+
+Agora seu site WordPress está rodando na AWS! 🚀
+
+
+Entre em contato: thiagomgoncalves87@gmail.com
+
+
 
