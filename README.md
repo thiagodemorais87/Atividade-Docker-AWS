@@ -1,14 +1,15 @@
-# Atividade-Docker-AWS
 # **Documentação Completa do Projeto - WordPress com AWS e Docker**
 
 ## **1️⃣ Introdução**
-Este documento detalha todo o processo de configuração do ambiente AWS para hospedar uma aplicação WordPress utilizando **Docker**, **Amazon EC2**, **Amazon RDS**, **Amazon EFS** e **Security Groups**.
+Este documento detalha todo o processo de configuração do ambiente AWS para hospedar uma aplicação WordPress utilizando **Docker**, **Amazon EC2**, **Amazon RDS**, **Amazon EFS**, **Security Groups**, **Load Balancer (ELB)** e **Auto Scaling**.
 
 ## **2️⃣ Tecnologias Utilizadas**
 - **Amazon Web Services (AWS)**
 - **Amazon EC2** (Elastic Compute Cloud)
 - **Amazon RDS** (Relational Database Service)
 - **Amazon EFS** (Elastic File System)
+- **Elastic Load Balancer (ELB)**
+- **Auto Scaling Group**
 - **Docker**
 - **Docker Compose**
 - **MySQL**
@@ -40,7 +41,6 @@ Crie um **Security Group** e configure as regras de acesso:
 | HTTP       | TCP      | 80    | 0.0.0.0/0        | Acesso Web     |
 | HTTPS      | TCP      | 443   | 0.0.0.0/0        | Acesso Web SSL |
 | MySQL/Aurora | TCP    | 3306  | IP do EC2        | Conexão MySQL   |
-
 
 ## **4️⃣ Configurar o Banco de Dados (RDS MySQL)**
 
@@ -74,22 +74,39 @@ Crie um **Security Group** e configure as regras de acesso:
    sudo mount -t nfs4 -o nfsvers=4.1 fs-0018990c9972e8485.efs.us-east-1.amazonaws.com:/ /mnt/efs
    ```
 
-## **6️⃣ Configuração do Docker e Docker Compose**
+## **6️⃣ Configurar Load Balancer (ELB)**
+1. Vá para o **AWS Console** → **EC2** → **Load Balancers**.
+2. Clique em **Create Load Balancer**.
+3. Escolha **Application Load Balancer**.
+4. Configure um **Listener** na porta **80** e direcione para as instâncias EC2.
+5. Crie um **Target Group** e registre as instâncias rodando o WordPress.
+6. Finalize a configuração e obtenha o **DNS do Load Balancer**.
 
-### **6.1 Instalar Docker no EC2**
+## **7️⃣ Configurar Auto Scaling Group**
+1. Vá para **EC2** → **Auto Scaling Groups** → **Create Auto Scaling Group**.
+2. Escolha um **Launch Template** (se necessário, crie um novo).
+3. Defina a **Quantidade Mínima e Máxima de Instâncias**:
+   - **Mínimo:** `1`
+   - **Desejado:** `2`
+   - **Máximo:** `5`
+4. Conecte o **Auto Scaling Group** ao **Load Balancer** criado anteriormente.
+5. Finalize a configuração.
+
+## **8️⃣ Configuração do Docker e Docker Compose**
+
+### **8.1 Instalar Docker no EC2**
 ```bash
 sudo apt update && sudo apt install -y docker.io
 sudo systemctl start docker
 sudo systemctl enable docker
 ```
 
-### **6.2 Instalar Docker Compose**
+### **8.2 Instalar Docker Compose**
 ```bash
 sudo apt install -y docker-compose
 ```
 
-## **7️⃣ Criar o Arquivo docker-compose.yml**
-Crie um arquivo `docker-compose.yml` com o seguinte conteúdo:
+## **9️⃣ Criar o Arquivo docker-compose.yml**
 
 ```yaml
 version: '3.1'
@@ -129,49 +146,5 @@ volumes:
       device: ":/"
 ```
 
-## **8️⃣ Executar os Containers**
+Agora seu site WordPress está rodando na AWS com **Auto Scaling** e **Load Balancer** configurados! 🚀
 
-```bash
-docker-compose up -d
-```
-
-Verifique se os containers estão rodando:
-```bash
-docker ps
-```
-
-Acesse o WordPress pelo navegador em:
-```
-http://52.91.59.95/:80
-```
-
-## **9️⃣ Configurar o Git e Enviar o Projeto para o GitHub**
-
-### **9.1 Configurar SSH para GitHub**
-```bash
-ssh-keygen -t ed25519 -C "xafullt@example.com"
-ssh-add ~/.ssh/id_ed25519
-cat ~/.ssh/id_ed25519.pub
-```
-Adicione essa chave ao GitHub.
-
-### **9.2 Enviar arquivos para o GitHub**
-```bash
-git init
-git remote add origin git@github.com:thiagodemorais87/Atividade-Docker-AWS.git
-git add .
-git commit -m "Projeto WordPress com Docker e AWS"
-git push -u origin main
-```
-
-## **🔟 Conclusão**
-Este documento cobre toda a configuração do ambiente AWS para rodar o WordPress utilizando Docker. Se precisar de ajustes, consulte os logs dos containers:
-
-```bash
-docker logs -f wordpress
-```
-
-Agora seu site WordPress está rodando na AWS! 🚀
-
-
-Entre em contato: thiagomgoncalves87@gmail.com
