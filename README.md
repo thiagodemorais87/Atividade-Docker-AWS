@@ -161,7 +161,7 @@ Acesse o WordPress pelo navegador em:
 http://http:/54.87.202.79/:80
 
 
-## **11 Configurar o Git e Enviar o Projeto para o GitHub**
+## **11 Configurar o Git e Versionamento**
 
 ### **11.1 Configurar SSH para GitHub**
 bash
