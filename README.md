@@ -145,7 +145,6 @@ volumes:
       o: "addr=fs-0018990c9972e8485.efs.us-east-1.amazonaws.com,rw"
       device: ":/"
 ```
-ficou faltando adicionar isso!!
 
 ## **10 Executar os Containers**
 
