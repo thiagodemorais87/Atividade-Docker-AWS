@@ -159,14 +159,14 @@ volumes:
 
 ## **10 Executar os Containers**
 
-bash
+```bash
 docker-compose up -d
-
+```
 
 Verifique se os containers estão rodando:
-bash
+```bash
 docker ps
-
+```
 
 Acesse o WordPress pelo navegador em:
 http://http:/54.87.202.79/:80
