@@ -42,6 +42,17 @@ Crie um **Security Group** e configure as regras de acesso:
 | HTTPS      | TCP      | 443   | 0.0.0.0/0        | Acesso Web SSL |
 | MySQL/Aurora | TCP    | 3306  | IP do EC2        | Conexão MySQL   |
 
+3.3 User Data
+ ```bash
+#!/bin/bash
+yum update -y
+yum install docker -y
+service docker start
+usermod -aG docker ec2-user
+chkconfig docker on
+
+```
+
 ## **4️ Configurar o Banco de Dados (RDS MySQL)**
 
 ### **4.1 Criar Banco de Dados RDS**
